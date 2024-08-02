@@ -1,2 +1,5 @@
 pandas==2.2.2
 web3==6.20.0
+multicallable~=6.0.4
+ruff==0.3.4
+requests~=2.32.3
