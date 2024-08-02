@@ -197,10 +197,10 @@ def main():
             (
                 timestamp.strftime("%Y-%m-%d"),
                 block_number,
-                balance / 1e18,
-                hedger_balance / 1e18,
-                hedger_allocated_balance / 1e18,
-                liquidators_balance / 1e18,
+                balance / 10**18,
+                hedger_balance / 10**18,
+                hedger_allocated_balance / 10**18,
+                liquidators_balance / 10**18,
             )
         )
 
