@@ -72,7 +72,8 @@ def get_nearest_block(timestamp):
 
     nearest_block = (
         start_block
-        if abs(w3.eth.get_block(start_block)["timestamp"] - timestamp) < abs(w3.eth.get_block(end_block)["timestamp"] - timestamp)
+        if abs(w3.eth.get_block(start_block)["timestamp"] - timestamp) < abs(
+            w3.eth.get_block(end_block)["timestamp"] - timestamp)
         else end_block
     )
     block_cache[str(timestamp)] = nearest_block
@@ -99,7 +100,8 @@ def get_hedger_allocated_balance(accounts, block_number):
     chunk_size = 150
     total_allocated_balance = Decimal(0)
     pages_count = len(accounts) // chunk_size if len(accounts) > chunk_size else 1
-    allocated_balances = symmio_multicallable.allocatedBalanceOfPartyB([(HEDGER_ADDR, w3.to_checksum_address(a["id"])) for a in accounts]).call(
+    allocated_balances = symmio_multicallable.allocatedBalanceOfPartyB(
+        [(HEDGER_ADDR, w3.to_checksum_address(a["id"])) for a in accounts]).call(
         block_identifier=block_number, n=pages_count, progress_bar=True
     )
     total_allocated_balance += Decimal(sum(allocated_balances))
@@ -125,7 +127,7 @@ def get_liquidators_balance(block_number):
     if cache_key in balance_cache:
         return int(balance_cache[cache_key])
 
-    balance = sum(symmio_multicallable.balanceOf(LIQUIDATORS).call(block_identifier=block_number))
+    balance = sum(symmio_multicallable.allocatedBalanceOfPartyA(LIQUIDATORS).call(block_identifier=block_number))
     balance_cache[cache_key] = str(balance)
     save_cache(balance_cache, BALANCE_CACHE_FILE)
     return balance
@@ -193,14 +195,18 @@ def main():
             liquidators_balance = get_liquidators_balance(block_number)
             print(f"Liquidators balance: {liquidators_balance}")
 
+        our_balance = hedger_balance + hedger_allocated_balance + liquidators_balance
+        users_balance = balance - our_balance
         balances.append(
             (
                 timestamp.strftime("%Y-%m-%d"),
                 block_number,
-                balance / 10**18,
-                hedger_balance / 10**18,
-                hedger_allocated_balance / 10**18,
-                liquidators_balance / 10**18,
+                hedger_balance / 10 ** 18,
+                hedger_allocated_balance / 10 ** 18,
+                liquidators_balance / 10 ** 18,
+                users_balance / 10 ** 18,
+                our_balance / 10 ** 18,
+                balance / 10 ** 18,
             )
         )
 
@@ -209,10 +215,12 @@ def main():
         columns=[
             "Date",
             "Block Number",
-            "Total Balance",
             "Hedger Balance",
             "Hedger Allocated Balance",
             "Liquidators Balance",
+            "Users Balance",
+            "Our Balance",
+            "Total Balance",
         ],
     )
     print(df)
