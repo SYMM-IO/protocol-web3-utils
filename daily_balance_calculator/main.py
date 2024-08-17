@@ -72,8 +72,7 @@ def get_nearest_block(timestamp):
 
     nearest_block = (
         start_block
-        if abs(w3.eth.get_block(start_block)["timestamp"] - timestamp) < abs(
-            w3.eth.get_block(end_block)["timestamp"] - timestamp)
+        if abs(w3.eth.get_block(start_block)["timestamp"] - timestamp) < abs(w3.eth.get_block(end_block)["timestamp"] - timestamp)
         else end_block
     )
     block_cache[str(timestamp)] = nearest_block
@@ -100,8 +99,7 @@ def get_hedger_allocated_balance(accounts, block_number):
     chunk_size = 150
     total_allocated_balance = Decimal(0)
     pages_count = len(accounts) // chunk_size if len(accounts) > chunk_size else 1
-    allocated_balances = symmio_multicallable.allocatedBalanceOfPartyB(
-        [(HEDGER_ADDR, w3.to_checksum_address(a["id"])) for a in accounts]).call(
+    allocated_balances = symmio_multicallable.allocatedBalanceOfPartyB([(HEDGER_ADDR, w3.to_checksum_address(a["id"])) for a in accounts]).call(
         block_identifier=block_number, n=pages_count, progress_bar=True
     )
     total_allocated_balance += Decimal(sum(allocated_balances))
@@ -167,6 +165,7 @@ def fetch_accounts_from_subgraph(last_timestamp=0, page_size=1000):
 def main():
     start_date = datetime(2024, 4, 2, 16, 17, 2, tzinfo=timezone.utc)
     end_date = pd.Timestamp.now(tz=timezone.utc).normalize()
+    # start_date = end_date - pd.DateOffset(days=10)
     timestamps = pd.date_range(start=start_date, end=end_date, freq="D").normalize()
 
     balances = []
@@ -201,12 +200,12 @@ def main():
             (
                 timestamp.strftime("%Y-%m-%d"),
                 block_number,
-                hedger_balance / 10 ** 18,
-                hedger_allocated_balance / 10 ** 18,
-                liquidators_balance / 10 ** 18,
-                users_balance / 10 ** 18,
-                our_balance / 10 ** 18,
-                balance / 10 ** 18,
+                hedger_balance / 10**18,
+                hedger_allocated_balance / 10**18,
+                liquidators_balance / 10**18,
+                users_balance / 10**18,
+                our_balance / 10**18,
+                balance / 10**18,
             )
         )
 
