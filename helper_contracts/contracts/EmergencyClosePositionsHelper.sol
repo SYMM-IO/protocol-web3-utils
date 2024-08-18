@@ -32,6 +32,7 @@ contract EmergencyClosePositionsHelper is Ownable {
             "EmergencyClosePositionsHelper: PartyB is already in emergency status"
         );
         ISymmio(symmioAddress).setPartyBEmergencyStatus(partyBs, true);
+
         for (uint8 i; i < _callDatas.length; i++) {
             bytes memory _callData = _callDatas[i];
             require(
@@ -44,9 +45,21 @@ contract EmergencyClosePositionsHelper is Ownable {
             }
             require(
                 functionSelector == 0xa3039431,
-                "EmergencyClosePositionsHelper: Only emergencyClosePosition in allowed"
+                "EmergencyClosePositionsHelper: Only emergencyClosePosition is allowed"
             );
+
+            // Extract quoteId from callData
+            uint256 quoteId;
+            assembly {
+                quoteId := mload(add(_callData, 0x24))  // 0x20 (length) + 0x04 (selector)
+            }
+
+            ISymmio.Quote memory quote = ISymmio(symmioAddress).getQuote(quoteId);
+            ISymmio.Symbol memory symbol = ISymmio(symmioAddress).getSymbol(quote.symbolId);
+
+            require(!symbol.isValid, "EmergencyClosePositionsHelper: Symbol should be invalid");
         }
+
         ISymmioPartyB(partyBAddress)._call(_callDatas);
         ISymmio(symmioAddress).setPartyBEmergencyStatus(partyBs, false);
     }

@@ -15,3 +15,4 @@ node_modules
 
 package-lock.json
 daily_balance_calculator/__pycache__/
+.idea
