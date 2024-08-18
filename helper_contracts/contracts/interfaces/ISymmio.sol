@@ -98,7 +98,6 @@ interface ISymmio {
         uint256 lastFundingPaymentTimestamp;
         uint256 deadline;
         uint256 tradingFee;
-        address affiliate;
     }
 
     function getQuote(uint256 quoteId) external view returns (Quote memory);

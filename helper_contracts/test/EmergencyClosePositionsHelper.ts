@@ -120,7 +120,6 @@ describe("EmergencyClosePositionsHelper", function () {
 				lastFundingPaymentTimestamp: 0,
 				deadline: 0,
 				tradingFee: 0,
-				affiliate: ethers.ZeroAddress
 			};
 			await mockSymmio.setMockQuote(quoteId, mockQuote);
 
@@ -179,7 +178,6 @@ describe("EmergencyClosePositionsHelper", function () {
 				lastFundingPaymentTimestamp: 0,
 				deadline: 0,
 				tradingFee: 0,
-				affiliate: ethers.ZeroAddress
 			};
 			await mockSymmio.setMockQuote(quoteId, mockQuote);
 
