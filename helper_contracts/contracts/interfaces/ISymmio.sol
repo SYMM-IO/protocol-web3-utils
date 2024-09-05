@@ -21,6 +21,8 @@ interface ISymmio {
         uint256 forceCloseGapRatio
     ) external;
 
+    function forceCloseGapRatio(uint256 symbolId) external view returns (uint256);
+
     struct Symbol {
         uint256 symbolId;
         string name;

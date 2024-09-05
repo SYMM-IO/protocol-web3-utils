@@ -54,4 +54,8 @@ contract MockSymmio is ISymmio {
 
     }
 
+    function forceCloseGapRatio(uint256 symbolId) external view returns (uint256){
+        return 1;
+    }
+
 }
