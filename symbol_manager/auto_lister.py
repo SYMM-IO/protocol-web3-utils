@@ -3,8 +3,8 @@ import time
 import os
 import web3
 
-from symbol_manager.configs import ChainConfig, chain_configs
-from symbol_manager.local_config import PRIVATE_KEY
+from configs import ChainConfig, chain_configs
+from local_config import PRIVATE_KEY
 
 
 def on_new_symbols(config: ChainConfig, symbols):
