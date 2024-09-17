@@ -34,7 +34,8 @@ interface ISymmio {
         uint256 fundingRateEpochDuration;
         uint256 fundingRateWindowTime;
     }
-
+	function addSymbols(Symbol[] memory symbols) external;
+    
     function getSymbol(uint256 symbolId) external view returns (Symbol memory);
 
     enum PositionType {

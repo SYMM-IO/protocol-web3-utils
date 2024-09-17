@@ -4,7 +4,6 @@ pragma solidity ^0.8.18;
 import "../interfaces/ISymmio.sol";
 
 contract MockSymmio is ISymmio {
-
     mapping(address => bool) public partyBEmergencyStatus;
     mapping(uint256 => Quote) public mockQuotes;
     mapping(uint256 => Symbol) public mockSymbols;
@@ -43,19 +42,21 @@ contract MockSymmio is ISymmio {
         return mockSymbols[symbolId];
     }
 
-    function setSymbolTradingFee(uint256 symbolId, uint256 tradingFee) external {
-
-    }
+    function setSymbolTradingFee(
+        uint256 symbolId,
+        uint256 tradingFee
+    ) external {}
 
     function setForceCloseGapRatio(
         uint256 symbolId,
         uint256 forceCloseGapRatio
-    ) external {
+    ) external {}
 
-    }
-
-    function forceCloseGapRatio(uint256 symbolId) external view returns (uint256){
+    function forceCloseGapRatio(
+        uint256 symbolId
+    ) external view returns (uint256) {
         return 1;
     }
 
+    function addSymbols(Symbol[] memory symbols) external override {}
 }
