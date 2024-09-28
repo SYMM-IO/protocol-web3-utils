@@ -1,6 +1,5 @@
 import requests
 import time
-import os
 import web3
 
 from configs import ChainConfig, chain_configs
@@ -8,7 +7,7 @@ from local_config import PRIVATE_KEY
 
 
 def on_new_symbols(config: ChainConfig, symbols):
-    print(f"New symbols detected: {symbols}")
+    print(f"New symbols detected: {symbols} on {config.name} network")
 
     # Create the contract instance
     contract_address = config.symmio_address
@@ -57,7 +56,7 @@ def fetch_active_binance_symbols():
     }
 
 
-def monitor_new_symbols(config: ChainConfig, poll_interval=60):
+def monitor_new_symbols(configs: list[ChainConfig], poll_interval=60):
     known_symbols = fetch_active_binance_symbols()
     print(f"Monitoring started. Found {len(known_symbols)} symbols initially.")
 
@@ -68,21 +67,22 @@ def monitor_new_symbols(config: ChainConfig, poll_interval=60):
             new_symbols = current_symbols - known_symbols
 
             if new_symbols:
-                on_new_symbols(config, new_symbols)
-                known_symbols = current_symbols
+                for c in configs:
+                    try:
+                        on_new_symbols(c, new_symbols)
+                    except Exception as e:
+                        print(f"An unexpected error occurred: {e}")
+                
+            known_symbols = current_symbols
         except requests.exceptions.RequestException as e:
             print(f"Error fetching symbols: {e}")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
 
+
+
 if __name__ == "__main__":
-    CONFIG_NAME = os.environ.get("CONFIG_NAME")
     if len(PRIVATE_KEY) == 0:
         raise ValueError("PRIVATE_KEY environment variable not set")
-    config = None
-    for c in chain_configs:
-        if c.name == CONFIG_NAME:
-            config = c
-            break
-    monitor_new_symbols(config, poll_interval=60)  # Check every 60 seconds
+    monitor_new_symbols(chain_configs, poll_interval=60)  # Check every 60 seconds
