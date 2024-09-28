@@ -6,7 +6,7 @@ function sleep(ms: number) {
 
 async function main() {
   const contractName = "LimitedSymbolAdder";
-  const factory = await ethers.getContractFactory("contractName");
+  const factory = await ethers.getContractFactory(contractName);
 
   const symmio = "";
   const admin = ""; // multi-sig
