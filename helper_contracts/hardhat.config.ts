@@ -116,6 +116,15 @@ export const config: HardhatUserConfig = {
 					browserURL: "https://blastscan.io",
 				},
 			},
+
+			{
+				network: "polygon",
+				chainId: 137,
+				urls: {
+					apiURL: `https://api.polygonscan.com/api?apiKey=${polygonApiKey}`,
+					browserURL: "https://polygonscan.com/",
+				},
+			},
 		],
 	},
 	paths: {
