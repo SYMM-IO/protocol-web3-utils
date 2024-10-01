@@ -1,11 +1,12 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { LimitedSymbolAdder, MockSymmio } from "../typechain-types";
+import { Signer } from "ethers";
 
 describe("LimitedSymbolAdder", function () {
   let limitedSymbolAdder: LimitedSymbolAdder;
   let mockSymmio: MockSymmio;
-  let admin: any, operator: any, pauser: any, otherAccount: any;
+  let admin: Signer, operator: Signer, pauser: Signer, otherAccount: Signer;
   let dailyLimit: number;
 
   const getDefaultSymbols = () => [
@@ -17,8 +18,8 @@ describe("LimitedSymbolAdder", function () {
       minAcceptablePortionLF: ethers.parseEther("0.1"),
       tradingFee: ethers.parseEther("0.01"),
       maxLeverage: ethers.parseEther("10"),
-      fundingRateEpochDuration: 86400, // 1 day in seconds
-      fundingRateWindowTime: 3600, // 1 hour in seconds
+      fundingRateEpochDuration: 86400,
+      fundingRateWindowTime: 3600,
     },
     {
       symbolId: 2,
@@ -28,8 +29,8 @@ describe("LimitedSymbolAdder", function () {
       minAcceptablePortionLF: ethers.parseEther("0.05"),
       tradingFee: ethers.parseEther("0.015"),
       maxLeverage: ethers.parseEther("15"),
-      fundingRateEpochDuration: 86400, // 1 day
-      fundingRateWindowTime: 3600, // 1 hour
+      fundingRateEpochDuration: 86400,
+      fundingRateWindowTime: 3600,
     },
   ];
 
@@ -93,8 +94,8 @@ describe("LimitedSymbolAdder", function () {
     dailyLimit = 5;
     limitedSymbolAdder = await LimitedSymbolAdder.deploy(
       await mockSymmio.getAddress(),
-      admin.address,
-      operator.address,
+      await admin.getAddress(),
+      await operator.getAddress(),
       dailyLimit
     );
   });
