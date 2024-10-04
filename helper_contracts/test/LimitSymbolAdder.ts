@@ -132,8 +132,9 @@ describe("LimitedSymbolAdder", function () {
     await ethers.provider.send("evm_increaseTime", [24 * 60 * 60]);
     await ethers.provider.send("evm_mine", []);
 
-    expect(await limitedSymbolAdder.connect(operator).addSymbols(symbols)).to.be
-      .not.reverted;
+    const extraSymbols = getExtraSymbols();
+    expect(await limitedSymbolAdder.connect(operator).addSymbols(extraSymbols))
+      .to.be.not.reverted;
   });
 
   it("Should allow admin to update the daily limit", async function () {
@@ -154,5 +155,18 @@ describe("LimitedSymbolAdder", function () {
         .connect(operator)
         .addSymbols([getDefaultSymbols()[0]])
     ).to.be.not.reverted;
+  });
+
+  it("Should revert if attempting to add a duplicate symbol", async function () {
+    const symbols = getDefaultSymbols();
+
+    // Add symbols once
+    await expect(limitedSymbolAdder.connect(operator).addSymbols(symbols)).to.be
+      .not.reverted;
+
+    // Attempt to add the same symbols again, expecting a revert
+    await expect(limitedSymbolAdder.connect(operator).addSymbols(symbols))
+      .to.be.revertedWithCustomError(limitedSymbolAdder, "DuplicateSymbol")
+      .withArgs(symbols[0].name);
   });
 });
