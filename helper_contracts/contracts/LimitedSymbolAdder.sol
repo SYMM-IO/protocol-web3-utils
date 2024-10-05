@@ -19,9 +19,12 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UNPAUSER_ROLE = keccak256("UNPAUSER_ROLE");
 
+    mapping(string => bool) public addedSymbols;
+
     // Define custom errors
     error DailyLimitExceeded(uint256 attempted, uint256 remaining);
     error InvalidSymbolsList();
+    error DuplicateSymbol(string name);
 
     // Define events
     event DailyLimitUpdated(uint256 newDailyLimit);
@@ -82,6 +85,15 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
         if (block.timestamp >= lastResetTimestamp + 1 days) {
             symbolsAddedToday = 0;
             lastResetTimestamp = block.timestamp;
+        }
+
+        for (uint256 i = 0; i < symbols.length; ) {
+            string memory symbolName = symbols[i].name;
+            if (addedSymbols[symbolName]) revert DuplicateSymbol(symbolName);
+            addedSymbols[symbolName] = true;
+            unchecked {
+                ++i;
+            }
         }
 
         uint256 symbolsLength = symbols.length;
