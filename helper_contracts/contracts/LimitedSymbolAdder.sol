@@ -53,7 +53,7 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
         _setupRole(PAUSER_ROLE, admin);
         _setupRole(UNPAUSER_ROLE, admin);
 
-        setDailyLimit(_dailyLimit);
+        dailyLimit = _dailyLimit;
     }
 
     /**

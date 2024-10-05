@@ -52,7 +52,7 @@ export const config: HardhatUserConfig = {
 			url: "https://1rpc.io/base",
 			accounts: accounts_list,
 		},
-		bnb: {
+		bsc: {
 			url: "https://binance.llamarpc.com",
 			accounts: accounts_list,
 		},
