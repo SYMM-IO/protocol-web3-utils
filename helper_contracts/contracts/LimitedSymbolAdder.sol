@@ -141,7 +141,7 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
 
 	/**
 	 * @dev Clears the stored symbol hashes.
-	 * Can only be called by accounts with the OPERATOR_ROLE.
+	 * Can only be called by accounts with the SETTER_ROLE.
 	 */
 	function clearSymbolHashes() external onlyRole(SETTER_ROLE) {
 		for (uint256 i = 0; i < symbolHashes.length; i++) {
@@ -153,7 +153,7 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
 
 	/**
 	 * @dev Loads symbols from the Symmio contract and stores their hashes.
-	 * Can only be called by accounts with the OPERATOR_ROLE.
+	 * Can only be called by accounts with the SETTER_ROLE.
 	 * @param start The starting index for fetching symbols.
 	 * @param size The number of symbols to fetch.
 	 */
@@ -171,11 +171,11 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
 
 	/**
 	 * @dev Updates the daily limit for adding symbols.
-	 * Can only be called by accounts with the DEFAULT_ADMIN_ROLE.
+	 * Can only be called by accounts with the SETTER_ROLE.
 	 * Emits a {DailyLimitUpdated} event.
 	 * @param _dailyLimit The new daily limit.
 	 */
-	function setDailyLimit(uint256 _dailyLimit) public onlyRole(DEFAULT_ADMIN_ROLE) {
+	function setDailyLimit(uint256 _dailyLimit) public onlyRole(SETTER_ROLE) {
 		dailyLimit = _dailyLimit;
 		emit DailyLimitUpdated(_dailyLimit);
 	}
