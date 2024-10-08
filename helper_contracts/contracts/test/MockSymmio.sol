@@ -7,7 +7,7 @@ contract MockSymmio is ISymmio {
 	mapping(address => bool) public partyBEmergencyStatus;
 	mapping(uint256 => Quote) public mockQuotes;
 	mapping(uint256 => Symbol) public mockSymbols;
-	Symbol[] symbols;
+	Symbol[] public symbols;
 
 	event PartyBEmergencyStatusSet(address partyB, bool status);
 
@@ -40,7 +40,15 @@ contract MockSymmio is ISymmio {
 	}
 
 	function getSymbols(uint256 start, uint256 size) public view returns (Symbol[] memory) {
-		return symbols;
+		uint256 end = start + size;
+		if (end > symbols.length) {
+			end = symbols.length;
+		}
+		Symbol[] memory result = new Symbol[](end - start);
+		for (uint256 i = start; i < end; i++) {
+			result[i - start] = symbols[i];
+		}
+		return result;
 	}
 
 	function setSymbolTradingFee(uint256 symbolId, uint256 tradingFee) external {}

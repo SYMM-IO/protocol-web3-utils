@@ -32,15 +32,11 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
 	// Define events
 	event DailyLimitUpdated(uint256 newDailyLimit);
 	event SymbolsAdded(uint256 count);
-	event ContractPaused(address account);
-	event ContractUnpaused(address account);
 	event SymbolHashesCleared(address account);
 	event SymmioSymbolsLoaded(uint256 start, uint256 size);
 
 	/**
 	 * @dev Initializes the contract by setting the Symmio address, admin, operator, and daily limit.
-	 * Grants DEFAULT_ADMIN_ROLE to the admin.
-	 * Calls `setDailyLimit` to initialize the daily limit and emit an event.
 	 * @param _symmioAddress The address of the Symmio contract.
 	 * @param admin The address of the contract administrator.
 	 * @param operator The address of the operator.
@@ -67,7 +63,6 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
 	 */
 	function pause() external whenNotPaused onlyRole(PAUSER_ROLE) {
 		_pause();
-		emit ContractPaused(msg.sender);
 	}
 
 	/**
@@ -76,7 +71,6 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
 	 */
 	function unpause() external whenPaused onlyRole(UNPAUSER_ROLE) {
 		_unpause();
-		emit ContractUnpaused(msg.sender);
 	}
 
 	/**
@@ -94,13 +88,9 @@ contract LimitedSymbolAdder is AccessControlEnumerable, Pausable {
 
 		uint256 symbolsLength = symbols.length;
 
-		if (symbolsLength == 0) {
-			revert InvalidSymbolsList();
-		}
+		if (symbolsLength == 0) revert InvalidSymbolsList();
 
-		if (symbolsAddedToday + symbolsLength > dailyLimit) {
-			revert DailyLimitExceeded(symbolsLength, dailyLimit - symbolsAddedToday);
-		}
+		if (symbolsAddedToday + symbolsLength > dailyLimit) revert DailyLimitExceeded(symbolsLength, dailyLimit - symbolsAddedToday);
 
 		for (uint256 i = 0; i < symbolsLength; ) {
 			ISymmio.Symbol memory symbol = symbols[i];
