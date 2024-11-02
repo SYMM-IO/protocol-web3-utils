@@ -1,3 +1,4 @@
 __pycache__/
 symbol_manager/.venv
 symbol_manager/local_config.py
+.idea
