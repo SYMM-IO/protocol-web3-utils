@@ -99,18 +99,4 @@ interface ISymmio {
 	}
 
 	function getQuote(uint256 quoteId) external view returns (Quote memory);
-
-	function pauseGlobal() external;
-
-    function pauseLiquidation() external;
-
-    function pauseAccounting() external;
-
-    function pausePartyAActions() external;
-
-    function pausePartyBActions() external;
-
-    function suspendedAddress(address user) external;
-	
-	function unsuspendedAddress(address user) external;
 }

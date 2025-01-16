@@ -9,7 +9,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgrad
 
 import "./interfaces/ISymmioPauseController.sol";
 
-contract ExternalSymmioController is 
+contract PauseController is 
     Initializable,
     AccessControlEnumerableUpgradeable
 {
