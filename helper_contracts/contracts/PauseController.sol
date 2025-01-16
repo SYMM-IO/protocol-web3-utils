@@ -4,14 +4,12 @@
 // For more information, see https://docs.symm.io/legal-disclaimer/license
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/extensions/AccessControlEnumerableUpgradeable.sol";
 
 import "./interfaces/ISymmio.sol";
 
 contract ExternalSymmioController is 
     Initializable,
-    PausableUpgradeable,
     AccessControlEnumerableUpgradeable
 {
     bytes32 public constant GLOBAL_PAUSER_ROLE = keccak256("GLOBAL_PAUSER_ROLE");
@@ -53,7 +51,6 @@ contract ExternalSymmioController is
         address unsuspender
     ) external initializer {
         // Initialize parent contracts
-        __Pausable_init();
         __AccessControlEnumerable_init();
 
         // Grant roles
