@@ -7,7 +7,7 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
 
-import "./interfaces/ISymmio.sol";
+import "./interfaces/ISymmioPauseController.sol";
 
 contract ExternalSymmioController is 
     Initializable,
@@ -33,11 +33,6 @@ contract ExternalSymmioController is
     event AddressUnsuspended(address indexed unsuspendedUser, address indexed unsuspender);
 
     address public symmioAddress;
-
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
 
     /// @dev Replaces the constructor in upgradeable contracts.
     function initialize(
@@ -74,37 +69,37 @@ contract ExternalSymmioController is
     }
 
     function pauseGlobal() external onlyRole(GLOBAL_PAUSER_ROLE) {
-        ISymmio(symmioAddress).pauseGlobal();
+        ISymmioPauseController(symmioAddress).pauseGlobal();
         emit GlobalPaused(msg.sender);
     }
 
     function pauseLiquidation() external onlyRole(LIQUIDATION_PAUSER_ROLE) {
-        ISymmio(symmioAddress).pauseLiquidation();
+        ISymmioPauseController(symmioAddress).pauseLiquidation();
         emit LiquidationPaused(msg.sender);
     }
 
     function pauseAccounting() external onlyRole(ACCOUNTING_PAUSER_ROLE) {
-        ISymmio(symmioAddress).pauseAccounting();
+        ISymmioPauseController(symmioAddress).pauseAccounting();
         emit AccountingPaused(msg.sender);
     }
 
     function pausePartyAActions() external onlyRole(PARTYA_PAUSER_ROLE) {
-        ISymmio(symmioAddress).pausePartyAActions();
+        ISymmioPauseController(symmioAddress).pausePartyAActions();
         emit PartyAPaused(msg.sender);
     }
 
     function pausePartyBActions() external onlyRole(PARTYB_PAUSER_ROLE) {
-        ISymmio(symmioAddress).pausePartyBActions();
+        ISymmioPauseController(symmioAddress).pausePartyBActions();
         emit PartyBPaused(msg.sender);
     }
 
     function suspendAddress(address user) external onlyRole(SUSPENDER_ROLE) {
-        ISymmio(symmioAddress).suspendedAddress(user);
+        ISymmioPauseController(symmioAddress).suspendedAddress(user);
         emit AddressSuspended(user, msg.sender);
     }
 
     function unsuspendAddress(address user) external onlyRole(UNSUSPENDER_ROLE) {
-        ISymmio(symmioAddress).unsuspendedAddress(user);
+        ISymmioPauseController(symmioAddress).unsuspendedAddress(user);
         emit AddressUnsuspended(user, msg.sender);
     }
 }
