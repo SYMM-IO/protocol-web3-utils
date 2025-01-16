@@ -4,7 +4,7 @@
 // For more information, see https://docs.symm.io/legal-disclaimer/license
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts-upgradeable/access/extensions/AccessControlEnumerableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
 
 import "./interfaces/ISymmio.sol";
 
@@ -54,14 +54,14 @@ contract ExternalSymmioController is
         __AccessControlEnumerable_init();
 
         // Grant roles
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(GLOBAL_PAUSER_ROLE, globalPauser);
-        _grantRole(LIQUIDATION_PAUSER_ROLE, liquidationPauser);
-        _grantRole(ACCOUNTING_PAUSER_ROLE, accountingPauser);
-        _grantRole(PARTYA_PAUSER_ROLE, partyAPauser);
-        _grantRole(PARTYB_PAUSER_ROLE, partyBPauser);
-        _grantRole(SUSPENDER_ROLE, suspender);
-        _grantRole(UNSUSPENDER_ROLE, unsuspender);
+        grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        grantRole(GLOBAL_PAUSER_ROLE, globalPauser);
+        grantRole(LIQUIDATION_PAUSER_ROLE, liquidationPauser);
+        grantRole(ACCOUNTING_PAUSER_ROLE, accountingPauser);
+        grantRole(PARTYA_PAUSER_ROLE, partyAPauser);
+        grantRole(PARTYB_PAUSER_ROLE, partyBPauser);
+        grantRole(SUSPENDER_ROLE, suspender);
+        grantRole(UNSUSPENDER_ROLE, unsuspender);
 
         // symmio address
         symmioAddress = _symmioAddress;
