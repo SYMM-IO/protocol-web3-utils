@@ -4,6 +4,7 @@
 // For more information, see https://docs.symm.io/legal-disclaimer/license
 pragma solidity ^0.8.19;
 
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
 
 import "./interfaces/ISymmio.sol";
