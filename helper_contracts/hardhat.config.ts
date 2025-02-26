@@ -1,5 +1,6 @@
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-verify";
+import "@openzeppelin/hardhat-upgrades"
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
 import "hardhat-gas-reporter";
@@ -15,6 +16,7 @@ const blastApiKey: string = process.env.BLAST_API_KEY || "";
 const baseApiKey: string = process.env.BASE_API_KEY || "";
 const polygonApiKey: string = process.env.POLYGON_API_KEY || "";
 const arbitrumApiKey: string = process.env.ARBITRUM_API_KEY || "";
+const beraApiKey: string = process.env.BERA_API_KEY || "";
 const mantleAPIKey: string = process.env.MANTLE_API_KEY || "";
 const mantle2APIKey: string = process.env.MANTLE2_API_KEY || "";
 
@@ -65,19 +67,24 @@ export const config: HardhatUserConfig = {
 			accounts: accounts_list,
 		},
 		mantle: {
-			url: "https://mantle.drpc.org",
+			url: "https://mantle-rpc.publicnode.com",
 			accounts: accounts_list,
 		},
 		arbitrum: {
-			url: "https://arbitrum.llamarpc.com",
+			url: "https://arbitrum.drpc.org",
 			accounts: accounts_list,
 		},
+		bera: {
+			url: "https://berachain.blockpi.network/v1/rpc/public",
+			accounts: accounts_list,
+		}
 	},
 	etherscan: {
 		apiKey: {
-			// mantle: mantleAPIKey,
-			mantle: mantle2APIKey,
+			mantle: mantleAPIKey,
+			// mantle: mantle2APIKey,
 			base: baseApiKey,
+			bera: beraApiKey,
 			blast: blastApiKey,
 			bsc: bnbApiKey,
 			polygon: polygonApiKey,
@@ -108,6 +115,23 @@ export const config: HardhatUserConfig = {
 					browserURL: "https://basescan.org",
 				},
 			},
+			// {
+			// 	network: "bera",
+			// 	chainId: 80094,
+			// 	urls: {
+			// 		apiURL: `https://api.berascan.com/api?apiKey=${beraApiKey}`,
+			// 		browserURL: "https://berascan.com/",
+			// 	},
+			// },
+			{
+				network: "bera",
+				chainId: 80094,
+				urls: {
+					apiURL: "https://api.routescan.io/v2/network/mainnet/evm/80094/etherscan",
+					browserURL: "https://beratrail.io",
+				},
+			},
+
 			{
 				network: "blast",
 				chainId: 81457,
