@@ -33,6 +33,10 @@ interface ISymmio {
 
 	function getSymbols(uint256 start, uint256 size) external view returns (Symbol[] memory);
 
+	function suspendedAddress(address user) external;
+
+	function unsuspendedAddress(address user) external;
+
 	enum PositionType {
 		LONG,
 		SHORT
