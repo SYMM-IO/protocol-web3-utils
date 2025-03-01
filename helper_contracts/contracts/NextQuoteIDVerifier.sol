@@ -11,9 +11,10 @@ contract NextQuoteIDVerifier {
 
     /**
      * @notice Sets the address of the symmio contract.
-     * @param _symmioAddress The address of the deployed ViewFacet.
+     * @param _symmioAddress Symmio address.
      */
     constructor(address _symmioAddress) {
+        require(_symmioAddress != address(0), "Invalid symmio address");
         symmioFacet = ISymmio(_symmioAddress);
     }
 
