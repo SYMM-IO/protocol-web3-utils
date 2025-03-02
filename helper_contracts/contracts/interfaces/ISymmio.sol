@@ -103,4 +103,6 @@ interface ISymmio {
 	}
 
 	function getQuote(uint256 quoteId) external view returns (Quote memory);
+
+	function getNextQuoteId() external view returns (uint256);
 }
