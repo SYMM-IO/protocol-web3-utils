@@ -21,10 +21,9 @@ contract NextQuoteIDVerifier {
     /**
      * @notice Verifies if the given quote ID is the next generated quote ID.
      * @param quoteId The quote ID to verify.
-     * @return True if the provided ID matches the last generated quote ID, false otherwise.
      */
-    function verifyNextQuoteId(uint256 quoteId) external view returns (bool) {
+    function verifyNextQuoteId(uint256 quoteId) external {
         uint256 lastQuoteId = symmioFacet.getNextQuoteId();
-        return quoteId == lastQuoteId;
+        require(quoteId == lastQuoteId, "Invalid NextQuoteId");
     }
 }
